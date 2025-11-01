@@ -1,16 +1,26 @@
-# firebase_notes_app
+Создание проекта firebase:
+Проект firebase был создан средствами официального сайта, а уже после, через консоль, база данных была привязана к flutter-проекту следующей командой:
+flutterfire configure --project first-firebase-b46b2
 
-A new Flutter project.
+Исползуемые пакеты:
+1. firebase_core - для подключения к базе данных. Только после его использования можно использовать другие сервисы.
+2. firebase_auth - для входа пользователя в систему, в данном случае в качестве анонима.
+3. firebase_auth - для чтения и записи данных.
 
-## Getting Started
+Используемые коллекции:
+1. Users - единственная коллекция, которая для каждого id пользвоателя хранит коллекцию его заметок, имеющую 4 поля: заголовок, текст, дату создания и дату обновления.
 
-This project is a starting point for a Flutter application.
+Установленные правила безопасности:
+1. Проверка пользвоателя на авторизацию (аноним).
+2. Проверка id пользователя при чтении данных.
 
-A few resources to get you started if this is your first Flutter project:
+Почему безопасность недостаточна для продакшена:
+1. Нет проверки структуры отправляемых данных.
+2. Нет проверки размера оптравляемых данных.
+3. Нет защиты от массовго чтения.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Главная ошибка, с которой были проблемы:
+Gradle проекта не собирался. Проблема была одновременно в друх местах:
+1. Была установлена устаревшая версия Java скрипт, из-за которой пакеты для работы с firebase не собирались.
+2. Gradle по умолчанию записывал кэш в папку, расположенную в папке пользователи. Однако имя пользователя - Артём, из-за чего были проблемы с кириллицей.
+Решеине - была установлена новая версия Java, а также была вручную задана папка для кэша Gradle.
